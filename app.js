@@ -20,20 +20,24 @@ const connectDB = async () =>{
 }
 
 const productSchema = new mongoose.Schema({
-    nombre:{type:String,required:true},
-    precio:{type:Number,required:true},
-    genero:{type:String,required:true},
-    empresa:{type:String,required:true},
-    descripcion:{type:String,required:true},
-    calificacion:{type:Number,required:true}
+
+    //Videojuegos
+    nombre:{type:String,required:true}, //nombre del videojuego
+    precio:{type:Number,required:true}, //precio del videojuego
+    genero:{type:String,required:true}, //genero del videojuego
+    empresa:{type:String,required:true}, //empresa desarrolladora del videojuego 
+    descripcion:{type:String,required:true}, //descripcion del videojuego
+    calificacion:{type:Number,required:true} //calificacion numerica del videojuego
 
 },{
     versionKey:false
 })
 
 const userSchema = new mongoose.Schema({
-    nombre:{type:String,required:true,unique:true},
-    password:{type:String,required:true},
+
+    //usuarios
+    email:{type:String,required:true,unique:true}, //email del usuario
+    password:{type:String,required:true}, //password del usuario
 
 },{
     versionKey:false
@@ -64,6 +68,7 @@ app.post("/auth/register",async (req,res)=>{
     const hash = await bcrypt.hash(body.password,10)
 
     const nuevoUsuario = new Usuarios({
+
         email:body.email,
         password:hash
     })
@@ -92,7 +97,7 @@ app.post("/auth/login",async (req,res)=>{
     res.json({token})
 })
 
-app.get("/productos",authMiddleware,async(req,res)=>{
+app.get("/productos",async(req,res)=>{
     const producto = await Producto.find()
     res.json({producto})
 })
@@ -106,12 +111,14 @@ app.post("/productos",authMiddleware,async(req,res)=>{
     }
 
     const nuevoProducto = new Producto({
-        nombre,
-        precio,
-        genero,
-        empresa,
-        descripcion,
-        calificacion
+
+        //videojuegos
+        nombre, //nombre del videojuego
+        precio, //precio del videojuego
+        genero, //genero del videojuego
+        empresa, //empresa desarrolladora del videojuego
+        descripcion, //descripcion del videojuego
+        calificacion //calificacion numerica del videojuego
     })
 
     await nuevoProducto.save()
@@ -133,7 +140,7 @@ app.patch("/productos/:id",authMiddleware,async (req,res)=>{
 })
 
 
-app.delete("/prodcutos/:id",authMiddleware,async (req,res)=>{
+app.delete("/productos/:id",authMiddleware,async (req,res)=>{
     const id = req.params.id
 
     const eliminadoProducto = await Producto.findByIdAndDelete(id)

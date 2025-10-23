@@ -7,6 +7,7 @@ import mongoose from "mongoose"
 const app = express()
 app.use(cors())
 app.use(express.json())
+const PORT = 3000
 
 
 app.get("/",(req,res)=>{
@@ -116,5 +117,36 @@ app.post("/productos",authMiddleware,async(req,res)=>{
     await nuevoProducto.save()
     res.json(nuevoProducto)
 
+})
+
+app.patch("/productos/:id",authMiddleware,async (req,res)=>{
+    const body = req.body
+    const id = req.params.id
+
+    const actualizacionProducto = await Producto.findByIdAndUpdate(id,body,{new:true})
+
+    if(!actualizacionProducto){
+        return res.status(404).json({error:"Producto no encontrado"})
+    }
+
+    res.json(actualizacionProducto)
+})
+
+
+app.delete("/prodcutos/:id",authMiddleware,async (req,res)=>{
+    const id = req.params.id
+
+    const eliminadoProducto = await Producto.findByIdAndDelete(id)
+
+    if(!eliminadoProducto){
+        return res.status(404).json({error:"Producto no encontrado"})
+    }
+
+    res.json(eliminadoProducto)
+})
+
+app.listen(PORT,()=>{
+    connectDB()
+    console.log("Servidor conectado")
 })
 

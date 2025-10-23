@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
 
     //usuarios
     email:{type:String,required:true,unique:true}, //email del usuario
-    password:{type:String,required:true}, //password del usuario
+    password:{type:String,required:true},//password del usuario
 
 },{
     versionKey:false
